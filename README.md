@@ -106,10 +106,13 @@ The testbench covers:
 - Tiny Tapeout
 - SkyWater 130nm (SKY130) process
 
+
 ## Acknowledgements
 
 We gratefully acknowledge the Department of Electronics and Communication Engineering and the Center of Excellence in Integrated Circuits and Systems (CoE-ICAS), RV College of Engineering, for providing the necessary resources and facilities.
 
-We sincerely thank our project guides, Shylashree N and Premananda BS, for their guidance and support.
+We sincerely thank our project guides, Shylashree N and Premananda BS, for their valuable guidance and support.
+
+Special thanks to Dr. H V Ravish Aradhya (HoD - ECE), Dr. Nagamani K (HOD - ETE), Dr. K S Geetha (Vice Principal), and Dr. K N Subramanya (Principal) for their constant encouragement and support in facilitating this Tiny Tapeout SKY26E submission.
 
 Developed at RV College of Engineering, Bengaluru, Karnataka, India.
