@@ -20,8 +20,6 @@ No external hardware is required. The design can be tested using the Tiny Tapeou
 
 ## Credits
 
-We gratefully acknowledge the Center of Excellence (CoE) in Integrated Circuits and Systems (ICAS) and the Department of Electronics and Communication Engineering (ECE), RV College of Engineering, for providing the necessary resources and facilities.
+We gratefully acknowledge the Center of Excellence (CoE) in Integrated Circuits and Systems (ICAS) and the Department of Electronics and Communication Engineering (ECE), RVCE, for providing the necessary resources and guidance.
 
-We sincerely thank our project guides, Shylashree N and Premananda BS, for their valuable guidance, encouragement and support throughout the development of this Programmable Digital Pulse Stretcher.
-
-**Developed by:** Anirudh Kulkarni and Ansh Agarwal, RV College of Engineering, Bengaluru.
+Special thanks to our project guides, Shylashree N and Premananda BS, Dr. H V Ravish Aradhya (HoD - ECE), Dr. K. S. Geetha (Vice Principal) and Dr. K. N. Subramanya (Principal) for their constant encouragement and support in facilitating this Tiny Tapeout SKY26E submission.
