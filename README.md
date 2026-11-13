@@ -1,44 +1,115 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+# Programmable Digital Pulse Stretcher
 
-# Tiny Tapeout Verilog Project Template
+A programmable digital pulse stretcher designed using Verilog HDL, verified using Cocotb-based simulation, and implemented for the Tiny Tapeout SKY26E shuttle through the ASIC design flow.
 
-- [Read the documentation for project](docs/info.md)
+**Authors:** Anirudh Kulkarni and Ansh Agarwal
+**Project Guides:** Shylashree N and Premananda BS
+**Institution:** RV College of Engineering, Bengaluru
 
-## What is Tiny Tapeout?
+## Project Overview
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
+The Programmable Digital Pulse Stretcher is a digital circuit designed to increase the duration of a short incoming pulse by generating an extended output pulse.
 
-To learn more and get started, visit https://tinytapeout.com.
+Short pulses may not remain active long enough for downstream digital circuits to reliably detect or process them. This design synchronizes the incoming pulse, detects its rising edge and maintains the output HIGH for a programmable number of clock cycles.
 
-## Set up your Verilog project
+## Working Principle
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
+The input pulse passes through a two-flip-flop synchronizer to synchronize it with the system clock. A rising-edge detector identifies a new pulse.
 
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
+When a valid rising edge is detected, the circuit activates the output and loads a programmable countdown counter. The counter determines how long the output remains HIGH.
 
-## Enable GitHub actions to build the results page
+The design supports four operating modes:
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
+| Mode | Operation | Description |
+|------|-----------|-------------|
+| 00 | Ignore while busy | Accepts a new pulse only when the output is LOW. |
+| 01 | Retrigger | A new input pulse restarts the output duration. |
+| 10 | Extend | A new input pulse adds its programmed duration to the remaining count. |
+| 11 | Retrigger | A new input pulse restarts the output duration. |
 
-## Resources
+A duration value of zero is treated as one clock cycle during normal loading.
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
+## Architecture
 
-## What next?
+The design is implemented in a single Verilog module named `tt_um_example`.
 
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+| Block | Function |
+|-------|----------|
+| Input Synchronizer | Two-flip-flop synchronizer for the incoming pulse. |
+| Rising-Edge Detector | Detects a new pulse using the synchronized input and delayed signal. |
+| Mode Selection Logic | Determines how incoming pulses affect an active output pulse. |
+| Programmable Counter | Loads and decrements the configured pulse duration. |
+| Output Control Logic | Maintains the output HIGH until the countdown completes. |
 
+## Operating Flow
 
+1. The circuit receives an input pulse through `ui_in[0]`.
+2. The pulse passes through a two-stage synchronizer.
+3. The rising-edge detector identifies the incoming pulse.
+4. The selected operating mode determines how the counter is updated.
+5. The programmable counter controls the output pulse duration.
+6. When the counter reaches its terminal count, `pulse_out` becomes LOW.
+
+**Overall flow:**
+
+Input Pulse → Synchronizer → Rising-Edge Detection → Mode Selection → Programmable Counter → Extended Output Pulse
+
+## Pin Mapping
+
+| Pin | Direction | Function |
+|-----|-----------|----------|
+| `ui_in[0]` | Input | Incoming pulse |
+| `ui_in[1]` | Input | User reset |
+| `ui_in[3:2]` | Input | Operating mode selection |
+| `ui_in[7:4]` | Input | Programmable pulse duration |
+| `uo_out[0]` | Output | Extended output pulse |
+| `uo_out[7:1]` | Output | Tied LOW |
+| `uio_in[7:0]` | Input | Unused |
+| `uio_out[7:0]` | Output | Tied LOW |
+| `uio_oe[7:0]` | Output | All bidirectional pins configured as inputs |
+| `clk` | Input | System clock |
+| `rst_n` | Input | Active-low reset |
+| `ena` | Input | Unused |
+
+## How to Test
+
+1. Apply the active-low reset through `rst_n` and release it.
+2. Select the operating mode using `ui_in[3:2]`.
+3. Set the required pulse duration using `ui_in[7:4]`.
+4. Apply a rising-edge pulse through `ui_in[0]`.
+5. Observe `uo_out[0]`, which becomes HIGH after synchronization and edge-detection latency.
+6. Verify that the output remains HIGH for the programmed duration.
+7. Apply additional input pulses to test retriggering and extension behaviour.
+
+The user reset can also be asserted through `ui_in[1]`.
+
+## Verification
+
+The design is verified using Cocotb-based automated testbenches in `test/test.py`, with Icarus Verilog used for simulation.
+
+The testbench covers:
+
+1. Reset operation and output initialization.
+2. Mode 00: Normal pulse stretching and ignoring new pulses while busy.
+3. Mode 01: Retrigger operation.
+4. Mode 10: Pulse extension operation.
+5. Mode 11: Retrigger operation.
+6. Different programmable durations: 1, 2, 4 and 8.
+
+## Tools and Technologies
+
+- Verilog HDL
+- Icarus Verilog
+- Cocotb
+- GTKWave
+- LibreLane
+- Tiny Tapeout
+- SkyWater 130nm (SKY130) process
+
+## Acknowledgements
+
+We gratefully acknowledge the Department of Electronics and Communication Engineering and the Center of Excellence in Integrated Circuits and Systems (CoE-ICAS), RV College of Engineering, for providing the necessary resources and facilities.
+
+We sincerely thank our project guides, Shylashree N and Premananda BS, for their guidance and support.
+
+Developed at RV College of Engineering, Bengaluru, Karnataka, India.

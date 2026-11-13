@@ -17,3 +17,11 @@ Test different configuration values and verify that the output pulse duration ch
 ## External hardware
 
 No external hardware is required. The design can be tested using the Tiny Tapeout testbench and simulation environment.
+
+## Credits
+
+We gratefully acknowledge the Center of Excellence (CoE) in Integrated Circuits and Systems (ICAS) and the Department of Electronics and Communication Engineering (ECE), RV College of Engineering, for providing the necessary resources and facilities.
+
+We sincerely thank our project guides, Shylashree N and Premananda BS, for their valuable guidance, encouragement and support throughout the development of this Programmable Digital Pulse Stretcher.
+
+**Developed by:** Anirudh Kulkarni and Ansh Agarwal, RV College of Engineering, Bengaluru.

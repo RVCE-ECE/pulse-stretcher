@@ -1,6 +1,6 @@
 project:
   title: "Programmable Digital Pulse Stretcher"
-  author: "Anirudh Kulkarni"
+  author: "Anirudh Kulkarni, Ansh Agarwal, RV College of Engineering"
   discord: ""
   description: "A programmable digital circuit that extends the duration of an input pulse."
   language: "Verilog"
