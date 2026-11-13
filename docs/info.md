@@ -22,4 +22,6 @@ No external hardware is required. The design can be tested using the Tiny Tapeou
 
 We gratefully acknowledge the Center of Excellence (CoE) in Integrated Circuits and Systems (ICAS) and the Department of Electronics and Communication Engineering (ECE), RVCE, for providing the necessary resources and guidance.
 
-Special thanks to our project guides, Shylashree N and Premananda BS, Dr. H V Ravish Aradhya (HoD - ECE), Dr. K. S. Geetha (Vice Principal) and Dr. K. N. Subramanya (Principal) for their constant encouragement and support in facilitating this Tiny Tapeout SKY26E submission.
+Special thanks to our project guides, Shylashree N and Premananda BS, Dr. H V Ravish Aradhya (HoD - ECE), Dr. Nagamani K(HOD - ETE), Dr. K. S. Geetha (Vice Principal), and Dr. K. N. Subramanya (Principal) for their constant encouragement and support in facilitating this Tiny Tapeout SKY26E submission.
+
+---
