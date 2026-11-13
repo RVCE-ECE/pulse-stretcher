@@ -6,7 +6,7 @@ project:
   language: "Verilog"
   clock_hz: 100000
   tiles: "1x1"
-  top_module: "tt_um_example"
+  top_module: "tt_um_pulse_stretcher"
   source_files:
     - "project.v"
 
